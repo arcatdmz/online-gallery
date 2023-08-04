@@ -1,0 +1,13 @@
+.loading {
+  position: relative;
+  text-align: center;
+}
+
+.loading,
+.error {
+  padding: 2em 0;
+}
+
+.meta {
+  text-align: right;
+}
