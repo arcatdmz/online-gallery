@@ -1,4 +1,11 @@
-import { FC, MouseEvent, useCallback, useContext, useState } from "react";
+import {
+  FC,
+  MouseEvent,
+  useCallback,
+  useContext,
+  useMemo,
+  useState
+} from "react";
 import { Button } from "semantic-ui-react";
 
 import styles from "./ImageViewer.module.css";
@@ -6,20 +13,39 @@ import styles from "./ImageViewer.module.css";
 import { BasePathContext } from "./BasePathContext";
 import { NavigationBreadcrumb } from "./NavigationBreadcrumb";
 import { NavigatorContext } from "./NavigatorContext";
-import { fromPathToImgLink } from "./logic";
+import { ThumbnailEntryIface, fromPathToImgLink } from "./logic";
 
 interface NavigationSegmentProps {
   path: string;
   dirPath: string;
+  thumbnails: ThumbnailEntryIface[];
 }
 
-export const ImageViewer: FC<NavigationSegmentProps> = ({ path, dirPath }) => {
+export const ImageViewer: FC<NavigationSegmentProps> = ({
+  path,
+  dirPath,
+  thumbnails
+}) => {
   const { setPath } = useContext(NavigatorContext);
   const { storagePath } = useContext(BasePathContext);
   const [inverted, setInverted] = useState(false);
 
-  const inactive = path === dirPath;
+  const isDirectory = path === dirPath;
   const imgLink = `${storagePath}${fromPathToImgLink(path)}`;
+
+  const [prevFile, nextFile] = useMemo(() => {
+    if (isDirectory || !thumbnails) {
+      return [null, null];
+    }
+    const index = thumbnails.findIndex(e => e.active);
+    if (index < 0) {
+      return [null, null];
+    }
+    return [
+      index > 0 ? thumbnails[index - 1] : null,
+      index < thumbnails.length - 1 ? thumbnails[index + 1] : null
+    ];
+  }, [isDirectory, thumbnails]);
 
   const handleBackdropClick = useCallback(() => {
     setPath && setPath(dirPath);
@@ -38,12 +64,28 @@ export const ImageViewer: FC<NavigationSegmentProps> = ({ path, dirPath }) => {
     [inverted]
   );
 
+  const handlePrevFileClick = useCallback(
+    (ev: MouseEvent) => {
+      ev.stopPropagation();
+      setPath && prevFile && setPath(`${dirPath}/${prevFile.name}`);
+    },
+    [setPath, dirPath, prevFile]
+  );
+
+  const handleNextFileClick = useCallback(
+    (ev: MouseEvent) => {
+      ev.stopPropagation();
+      setPath && nextFile && setPath(`${dirPath}/${nextFile.name}`);
+    },
+    [setPath, dirPath, nextFile]
+  );
+
   return (
     <div
-      className={`${styles.viewer}${inactive ? "" : ` ${styles.active}`}`}
+      className={`${styles.viewer}${isDirectory ? "" : ` ${styles.active}`}`}
       onClick={handleBackdropClick}
     >
-      {!inactive && (
+      {!isDirectory && (
         <div className={styles.tools}>
           <Button
             basic
@@ -52,9 +94,25 @@ export const ImageViewer: FC<NavigationSegmentProps> = ({ path, dirPath }) => {
             inverted
             onClick={handleInvertClick}
           />
+          <Button
+            basic
+            inverted
+            circular
+            icon="arrow left"
+            disabled={!prevFile}
+            onClick={handlePrevFileClick}
+          />
+          <Button
+            basic
+            inverted
+            circular
+            icon="arrow right"
+            disabled={!nextFile}
+            onClick={handleNextFileClick}
+          />
         </div>
       )}
-      {inactive ? null : (
+      {isDirectory ? null : (
         <div className={styles.content}>
           <a href={imgLink} target="_blank" onClick={handleClick}>
             <img src={imgLink} className={inverted ? styles.inverted : ""} />

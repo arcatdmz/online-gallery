@@ -7,7 +7,7 @@ import { NavigatorContext } from "./NavigatorContext";
 import { fromThumbnailEntryToImgProps } from "./logic";
 
 interface NavigationThumbnailProps {
-  path: string;
+  dirPath: string;
   name: string;
   thumbnail: string;
   link: string;
@@ -15,17 +15,17 @@ interface NavigationThumbnailProps {
 }
 
 export const NavigationThumbnail: FC<NavigationThumbnailProps> = props => {
-  const { path, name, link, active } = props;
+  const { dirPath, name, link, active } = props;
 
   const { storagePath } = useContext(BasePathContext);
   const { setPath } = useContext(NavigatorContext);
   const handleClick = useCallback(
     (ev: MouseEvent) => {
       ev.preventDefault();
-      setPath && setPath(`${path}/${name}`);
+      setPath && setPath(`${dirPath}/${name}`);
       return false;
     },
-    [path, name, setPath]
+    [dirPath, name, setPath]
   );
 
   return (

@@ -1,7 +1,7 @@
 const filePattern = new RegExp(/^(.+)\/([^/]+)\.([a-zA-Z]+)$/i);
 const thumbnailPattern = new RegExp(/^(.+)_800x800\.([a-zA-Z]+)$/);
 
-interface ThumbnailEntryIface {
+export interface ThumbnailEntryIface {
   name: string;
   thumbnail: string;
   link: string;
@@ -22,13 +22,13 @@ export function getPath(path: string) {
 
 export function fromDataToThumbnailEntries(
   data: { path: string }[],
-  parent: string,
+  dirPath: string,
   lastFilePath?: string
 ): ThumbnailEntryIface[] {
   return data
     .filter(({ path }) => thumbnailPattern.test(path))
     .map(({ path }) => {
-      const fileName = path.substring(parent.length + 1);
+      const fileName = path.substring(dirPath.length + 1);
       const result = thumbnailPattern.exec(path) as RegExpExecArray;
       const [, baseName, ext] = result;
       const name = fileName.replace("_800x800", "");
@@ -36,7 +36,7 @@ export function fromDataToThumbnailEntries(
         name,
         thumbnail: path,
         link: `${baseName}_2400x2400.${ext}`,
-        active: `${parent}/${name}` === lastFilePath
+        active: `${dirPath}/${name}` === lastFilePath
       };
     });
 }

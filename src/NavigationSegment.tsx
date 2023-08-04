@@ -8,7 +8,7 @@ import { BasePathContext } from "./BasePathContext";
 import { NavigationBreadcrumb } from "./NavigationBreadcrumb";
 import { NavigationList } from "./NavigationList";
 import { NavigationThumbnails } from "./NavigationThumbnails";
-import { getPath } from "./logic";
+import { fromDataToThumbnailEntries, getPath } from "./logic";
 import { ImageViewer } from "./ImageViewer";
 
 interface NavigationSegmentProps {
@@ -31,6 +31,11 @@ export const NavigationSegment: FC<NavigationSegmentProps> = ({
       )
   });
 
+  const thumbnails = useMemo(
+    () => (data ? fromDataToThumbnailEntries(data, dirPath, lastFilePath) : []),
+    [data, dirPath, lastFilePath]
+  );
+
   const numFolders = useMemo(
     () => data?.filter(e => !!e.directory).length || 0,
     [data]
@@ -40,7 +45,7 @@ export const NavigationSegment: FC<NavigationSegmentProps> = ({
   return (
     <Segment>
       <Portal open>
-        <ImageViewer dirPath={dirPath} path={path} />
+        <ImageViewer dirPath={dirPath} path={path} thumbnails={thumbnails} />
       </Portal>
       <NavigationBreadcrumb path={dirPath} />
       {isLoading ? (
@@ -52,11 +57,7 @@ export const NavigationSegment: FC<NavigationSegmentProps> = ({
       ) : (
         <>
           {numFolders <= 0 ? (
-            <NavigationThumbnails
-              path={dirPath}
-              lastFilePath={lastFilePath}
-              data={data}
-            />
+            <NavigationThumbnails dirPath={dirPath} thumbnails={thumbnails} />
           ) : (
             <NavigationList path={dirPath} data={data} />
           )}

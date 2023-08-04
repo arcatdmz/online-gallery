@@ -15,6 +15,11 @@
   top: 0;
   right: 0;
   padding: 1em;
+  display: flex;
+}
+
+.viewer > .tools > button {
+  margin-left: 0.3em;
 }
 
 .viewer > .content {
