@@ -1,8 +1,8 @@
-import { FC, useContext, useMemo } from "react";
+import { FC, useMemo } from "react";
 
 import styles from "./NavigationThumbnails.module.css";
 
-import { BasePathContext } from "./BasePathContext";
+import { NavigationThumbnail } from "./NavigationThumbnail";
 
 const thumbnailPattern = new RegExp(/^(.+)_800x800\.([a-zA-Z]+)$/);
 
@@ -15,8 +15,6 @@ export const NavigationThumbnails: FC<NavigationThumbnailsProps> = ({
   path: parent,
   data
 }) => {
-  const { storagePath } = useContext(BasePathContext);
-
   const filtered = useMemo(
     () =>
       data
@@ -35,17 +33,8 @@ export const NavigationThumbnails: FC<NavigationThumbnailsProps> = ({
 
   return (
     <div className={styles.thumbnails}>
-      {filtered.map(({ name, thumbnail, link }) => (
-        <a key={name} href={`${storagePath}${link}`}>
-          <img
-            src={`${storagePath}${thumbnail}`}
-            width="200"
-            height="133.25"
-            alt={name}
-            loading="lazy"
-          />
-          <span className={styles.caption}>{name}</span>
-        </a>
+      {filtered.map((e, i) => (
+        <NavigationThumbnail key={e?.name || i} {...e} />
       ))}
     </div>
   );

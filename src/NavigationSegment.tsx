@@ -37,11 +37,11 @@ export const NavigationSegment: FC<NavigationSegmentProps> = ({ path }) => {
       </Portal>
       <NavigationBreadcrumb path={path} />
       {isLoading ? (
-        <p className={styles.loading}>
+        <div className={styles.loading}>
           <Loader active />
-        </p>
+        </div>
       ) : error || !data ? (
-        <p className={styles.error}>データが取得できませんでした。</p>
+        <div className={styles.error}>データが取得できませんでした。</div>
       ) : (
         <>
           {numFolders <= 0 ? (

@@ -1,0 +1,17 @@
+.thumbnail {
+  display: block;
+  width: 200px;
+  margin-right: 0.5em;
+  margin-bottom: 0.5em;
+}
+.thumbnail > img {
+  display: block;
+  line-height: 0;
+}
+.thumbnail > .caption {
+  display: block;
+  text-align: center;
+  background: #333;
+  color: #fff;
+  padding: 0.4em;
+}
