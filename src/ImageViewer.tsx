@@ -1,4 +1,5 @@
-import { FC, MouseEvent, useCallback, useContext } from "react";
+import { FC, MouseEvent, useCallback, useContext, useState } from "react";
+import { Button } from "semantic-ui-react";
 
 import styles from "./ImageViewer.module.css";
 
@@ -15,8 +16,9 @@ interface NavigationSegmentProps {
 export const ImageViewer: FC<NavigationSegmentProps> = ({ path, dirPath }) => {
   const { setPath } = useContext(NavigatorContext);
   const { storagePath } = useContext(BasePathContext);
+  const [inverted, setInverted] = useState(false);
 
-  const active = path === dirPath;
+  const inactive = path === dirPath;
   const imgLink = `${storagePath}${fromPathToImgLink(path)}`;
 
   const handleBackdropClick = useCallback(() => {
@@ -28,15 +30,34 @@ export const ImageViewer: FC<NavigationSegmentProps> = ({ path, dirPath }) => {
     return true;
   }, []);
 
+  const handleInvertClick = useCallback(
+    (ev: MouseEvent) => {
+      ev.stopPropagation();
+      setInverted(!inverted);
+    },
+    [inverted]
+  );
+
   return (
     <div
-      className={`${styles.viewer}${active ? "" : ` ${styles.active}`}`}
+      className={`${styles.viewer}${inactive ? "" : ` ${styles.active}`}`}
       onClick={handleBackdropClick}
     >
-      {active ? null : (
+      {!inactive && (
+        <div className={styles.tools}>
+          <Button
+            basic
+            icon="shuffle"
+            content="180度回転"
+            inverted
+            onClick={handleInvertClick}
+          />
+        </div>
+      )}
+      {inactive ? null : (
         <div className={styles.content}>
           <a href={imgLink} target="_blank" onClick={handleClick}>
-            <img src={imgLink} />
+            <img src={imgLink} className={inverted ? styles.inverted : ""} />
           </a>
         </div>
       )}

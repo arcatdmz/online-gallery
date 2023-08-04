@@ -10,10 +10,21 @@
   backdrop-filter: blur(3px);
 }
 
-.viewer .content {
+.viewer > .tools {
+  position: fixed;
+  top: 0;
+  right: 0;
+  padding: 1em;
+}
+
+.viewer > .content {
   z-index: 90;
 }
 
-.viewer .content img {
+.viewer > .content img {
   width: 100%;
+}
+
+.viewer > .content img.inverted {
+  rotate: 180deg;
 }
