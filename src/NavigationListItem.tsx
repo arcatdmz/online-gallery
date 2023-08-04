@@ -1,7 +1,8 @@
-import { FC, useContext } from "react";
+import { FC, MouseEvent, useCallback, useContext } from "react";
 import { List } from "semantic-ui-react";
 
 import { BasePathContext } from "./BasePathContext";
+import { NavigatorContext } from "./NavigatorContext";
 
 interface NavigationListItemProps {
   path: string;
@@ -14,19 +15,28 @@ export const NavigationListItem: FC<NavigationListItemProps> = ({
   parent,
   directory
 }) => {
-  const { appPath, storagePath } = useContext(BasePathContext);
+  const { appPath } = useContext(BasePathContext);
+  const { setPath } = useContext(NavigatorContext);
+
   const relPath = path.substring(parent.length + 1);
+
+  const handleClick = useCallback(
+    (ev: MouseEvent) => {
+      ev.preventDefault();
+      setPath && setPath(path);
+      return false;
+    },
+    [setPath, path]
+  );
+
   return (
     <List.Item
       key={path}
       icon={directory ? "folder" : "file"}
       content={relPath}
       as="a"
-      href={
-        directory
-          ? `${appPath}?path=${encodeURIComponent(path)}`
-          : `${storagePath}${path}`
-      }
+      href={`${appPath}?path=${encodeURIComponent(path)}`}
+      onClick={handleClick}
     />
   );
 };

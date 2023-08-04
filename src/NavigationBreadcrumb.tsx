@@ -1,9 +1,9 @@
-import { FC, Fragment, useContext } from "react";
-import { Breadcrumb, Icon } from "semantic-ui-react";
+import { FC, Fragment } from "react";
+import { Breadcrumb } from "semantic-ui-react";
 
 import styles from "./NavigationBreadcrumb.module.css";
 
-import { BasePathContext } from "./BasePathContext";
+import { NavigationBreadcrumbSection } from "./NavigationBreadcrumbSection";
 
 interface NavigationBreadcrumbProps {
   path: string;
@@ -14,7 +14,6 @@ export const NavigationBreadcrumb: FC<NavigationBreadcrumbProps> = ({
   path,
   attached
 }) => {
-  const { appPath } = useContext(BasePathContext);
   const paths = path ? path.split("/") : null;
   return (
     <div
@@ -28,17 +27,9 @@ export const NavigationBreadcrumb: FC<NavigationBreadcrumbProps> = ({
     >
       <Breadcrumb>
         {paths ? (
-          paths.map((key, i) => (
+          paths.map((_, i) => (
             <Fragment key={i}>
-              <Breadcrumb.Section
-                as="a"
-                href={`${appPath}?path=${encodeURIComponent(
-                  paths.slice(0, i + 1).join("/")
-                )}`}
-                key={i}
-              >
-                {i === 0 ? <Icon name="home" /> : key}
-              </Breadcrumb.Section>
+              <NavigationBreadcrumbSection paths={paths} index={i} />
               <Breadcrumb.Divider />
             </Fragment>
           ))
