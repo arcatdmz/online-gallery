@@ -13,9 +13,13 @@ import { ImageViewer } from "./ImageViewer";
 
 interface NavigationSegmentProps {
   path: string;
+  lastFilePath?: string;
 }
 
-export const NavigationSegment: FC<NavigationSegmentProps> = ({ path }) => {
+export const NavigationSegment: FC<NavigationSegmentProps> = ({
+  path,
+  lastFilePath
+}) => {
   const { storagePath } = useContext(BasePathContext);
   const dirPath = getPath(path);
 
@@ -48,7 +52,11 @@ export const NavigationSegment: FC<NavigationSegmentProps> = ({ path }) => {
       ) : (
         <>
           {numFolders <= 0 ? (
-            <NavigationThumbnails path={dirPath} data={data} />
+            <NavigationThumbnails
+              path={dirPath}
+              lastFilePath={lastFilePath}
+              data={data}
+            />
           ) : (
             <NavigationList path={dirPath} data={data} />
           )}

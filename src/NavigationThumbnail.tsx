@@ -11,10 +11,11 @@ interface NavigationThumbnailProps {
   name: string;
   thumbnail: string;
   link: string;
+  active?: boolean;
 }
 
 export const NavigationThumbnail: FC<NavigationThumbnailProps> = props => {
-  const { path, name, link } = props;
+  const { path, name, link, active } = props;
 
   const { storagePath } = useContext(BasePathContext);
   const { setPath } = useContext(NavigatorContext);
@@ -30,7 +31,7 @@ export const NavigationThumbnail: FC<NavigationThumbnailProps> = props => {
   return (
     <a
       href={`${storagePath}${link}`}
-      className={styles.thumbnail}
+      className={`${styles.thumbnail}${active ? ` ${styles.active}` : ""}`}
       onClick={handleClick}
     >
       <img

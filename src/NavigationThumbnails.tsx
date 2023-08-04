@@ -1,4 +1,4 @@
-import { FC, useMemo } from "react";
+import { FC } from "react";
 
 import styles from "./NavigationThumbnails.module.css";
 
@@ -6,18 +6,17 @@ import { NavigationThumbnail } from "./NavigationThumbnail";
 import { fromDataToThumbnailEntries } from "./logic";
 
 interface NavigationThumbnailsProps {
-  path: string;
   data: { path: string; directory?: boolean }[];
+  path: string;
+  lastFilePath?: string;
 }
 
 export const NavigationThumbnails: FC<NavigationThumbnailsProps> = ({
+  data,
   path,
-  data
+  lastFilePath
 }) => {
-  const filtered = useMemo(
-    () => fromDataToThumbnailEntries(path, data),
-    [path, data]
-  );
+  const filtered = fromDataToThumbnailEntries(data, path, lastFilePath);
 
   return (
     <div className={styles.thumbnails}>

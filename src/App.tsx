@@ -5,16 +5,25 @@ import "./App.css";
 
 import { NavigationSegment } from "./NavigationSegment";
 import { NavigatorContext } from "./NavigatorContext";
+import { isFile } from "./logic";
 
 const initialPath = ".";
 
 const App: FC = () => {
   const [path, setPath] = useState(initialPath);
+  const [lastFilePath, setLastFilePath] = useState<string | undefined>(
+    undefined
+  );
 
   useEffect(() => {
     const revalidate = () => {
       const searchParams = new URLSearchParams(window.location.search);
-      setPath(searchParams.get("path") || initialPath);
+      const path = searchParams.get("path") || initialPath;
+
+      setPath(path);
+      if (isFile(path)) {
+        setLastFilePath(path);
+      }
     };
 
     window.addEventListener("popstate", revalidate);
@@ -38,6 +47,9 @@ const App: FC = () => {
       window.history.pushState({}, "", url);
 
       setPath(path);
+      if (isFile(path)) {
+        setLastFilePath(path);
+      }
     },
     [setPath]
   );
@@ -45,7 +57,7 @@ const App: FC = () => {
   return (
     <div className="app">
       <NavigatorContext.Provider value={{ setPath: doSetPath }}>
-        <NavigationSegment path={path} />
+        <NavigationSegment path={path} lastFilePath={lastFilePath} />
       </NavigatorContext.Provider>
       <Divider />
       <footer>&copy; Jun Kato 2023</footer>

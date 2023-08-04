@@ -5,6 +5,7 @@ interface ThumbnailEntryIface {
   name: string;
   thumbnail: string;
   link: string;
+  active?: boolean;
 }
 
 export function isFile(path: string) {
@@ -20,19 +21,22 @@ export function getPath(path: string) {
 }
 
 export function fromDataToThumbnailEntries(
+  data: { path: string }[],
   parent: string,
-  data: { path: string; directory?: boolean }[]
+  lastFilePath?: string
 ): ThumbnailEntryIface[] {
   return data
     .filter(({ path }) => thumbnailPattern.test(path))
     .map(({ path }) => {
-      const relPath = path.substring(parent.length + 1);
+      const fileName = path.substring(parent.length + 1);
       const result = thumbnailPattern.exec(path) as RegExpExecArray;
       const [, baseName, ext] = result;
+      const name = fileName.replace("_800x800", "");
       return {
-        name: relPath.replace("_800x800", ""),
+        name,
         thumbnail: path,
-        link: `${baseName}_2400x2400.${ext}`
+        link: `${baseName}_2400x2400.${ext}`,
+        active: `${parent}/${name}` === lastFilePath
       };
     });
 }
