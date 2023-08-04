@@ -7,15 +7,25 @@ import { BasePathContext } from "./BasePathContext";
 
 interface NavigationBreadcrumbProps {
   path: string;
+  attached?: "top" | "bottom" | "fixed";
 }
 
 export const NavigationBreadcrumb: FC<NavigationBreadcrumbProps> = ({
-  path
+  path,
+  attached
 }) => {
   const { appPath } = useContext(BasePathContext);
   const paths = path ? path.split("/") : null;
   return (
-    <div className={styles.breadcrumb}>
+    <div
+      className={`${styles.breadcrumb} ${
+        attached === "bottom"
+          ? styles.bottom
+          : attached === "fixed"
+          ? styles.fixed
+          : styles.top
+      }`}
+    >
       <Breadcrumb>
         {paths ? (
           paths.map((key, i) => (

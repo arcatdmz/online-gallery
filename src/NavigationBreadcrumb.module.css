@@ -1,4 +1,22 @@
 .breadcrumb {
+  padding: 0 0.2em;
+}
+.top {
   padding-bottom: 0.5em;
   border-bottom: 1px solid rgba(34, 36, 38, 0.15);
+}
+.bottom {
+  padding-top: 0.5em;
+  border-top: 1px solid rgba(34, 36, 38, 0.15);
+}
+.fixed {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 0.5em 1em;
+  background: rgba(17, 18, 14, 0.9);
+}
+.fixed.breadcrumb :global(> .breadcrumb > .divider) {
+  color: #eee;
 }

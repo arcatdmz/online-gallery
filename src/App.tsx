@@ -1,9 +1,9 @@
 import { FC, useEffect, useState } from "react";
-import { Container } from "semantic-ui-react";
+import { Divider } from "semantic-ui-react";
 
 import "./App.css";
 
-import { NavigationList } from "./NavigationList";
+import { NavigationSegment } from "./NavigationSegment";
 
 const initialPath = ".";
 
@@ -18,11 +18,17 @@ const App: FC = () => {
     setPath(searchParams.get("path") || initialPath);
   }, []);
 
+  useEffect(() => {
+    document.title = `資料ビューワ${
+      path && path.length > 2 ? `: ${path.substring(2)}` : ""
+    }`;
+  }, [path]);
+
   return (
     <div className="app">
-      <Container>
-        <NavigationList path={path} />
-      </Container>
+      <NavigationSegment path={path} />
+      <Divider />
+      <footer>&copy; Jun Kato 2023</footer>
     </div>
   );
 };
