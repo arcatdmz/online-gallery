@@ -6,6 +6,7 @@ import "./App.css";
 import { NavigationSegment } from "./NavigationSegment";
 import { NavigatorContext } from "./NavigatorContext";
 import { isFile } from "./logic";
+import { CSVExportButton } from "./CSVExportButton";
 
 const initialPath = ".";
 
@@ -60,7 +61,11 @@ const App: FC = () => {
         <NavigationSegment path={path} lastFilePath={lastFilePath} />
       </NavigatorContext.Provider>
       <Divider />
-      <footer>&copy; Jun Kato 2023</footer>
+      <footer>
+        <CSVExportButton dirPath={path} disabled={lastFilePath === path} />
+        <Divider hidden />
+        <p>&copy; Jun Kato 2023</p>
+      </footer>
     </div>
   );
 };

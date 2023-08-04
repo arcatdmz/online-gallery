@@ -5,3 +5,8 @@
 footer {
   text-align: center;
 }
+
+.ui.dimmer {
+  background: #333a !important;
+  backdrop-filter: blur(3px) !important;
+}
