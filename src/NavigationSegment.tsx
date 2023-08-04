@@ -8,6 +8,8 @@ import { BasePathContext } from "./BasePathContext";
 import { NavigationBreadcrumb } from "./NavigationBreadcrumb";
 import { NavigationList } from "./NavigationList";
 import { NavigationThumbnails } from "./NavigationThumbnails";
+import { getPath } from "./logic";
+import { ImageViewer } from "./ImageViewer";
 
 interface NavigationSegmentProps {
   path: string;
@@ -15,11 +17,12 @@ interface NavigationSegmentProps {
 
 export const NavigationSegment: FC<NavigationSegmentProps> = ({ path }) => {
   const { storagePath } = useContext(BasePathContext);
+  const dirPath = getPath(path);
 
   const { isLoading, error, data } = useQuery({
-    queryKey: path.split("/"),
+    queryKey: dirPath.split("/"),
     queryFn: () =>
-      fetch(`${storagePath}${path}/index.json`).then(
+      fetch(`${storagePath}${dirPath}/index.json`).then(
         res => res.json() as Promise<{ path: string; directory?: boolean }[]>
       )
   });
@@ -33,9 +36,9 @@ export const NavigationSegment: FC<NavigationSegmentProps> = ({ path }) => {
   return (
     <Segment>
       <Portal open>
-        <NavigationBreadcrumb path={path} attached="fixed" />
+        <ImageViewer dirPath={dirPath} path={path} />
       </Portal>
-      <NavigationBreadcrumb path={path} />
+      <NavigationBreadcrumb path={dirPath} />
       {isLoading ? (
         <div className={styles.loading}>
           <Loader active />
@@ -45,9 +48,9 @@ export const NavigationSegment: FC<NavigationSegmentProps> = ({ path }) => {
       ) : (
         <>
           {numFolders <= 0 ? (
-            <NavigationThumbnails path={path} data={data} />
+            <NavigationThumbnails path={dirPath} data={data} />
           ) : (
-            <NavigationList path={path} data={data} />
+            <NavigationList path={dirPath} data={data} />
           )}
           <p className={styles.meta}>
             全 <strong>{numFolders}</strong> フォルダ,{" "}
@@ -55,7 +58,7 @@ export const NavigationSegment: FC<NavigationSegmentProps> = ({ path }) => {
           </p>
         </>
       )}
-      <NavigationBreadcrumb path={path} attached="bottom" />
+      <NavigationBreadcrumb path={dirPath} attached="bottom" />
     </Segment>
   );
 };

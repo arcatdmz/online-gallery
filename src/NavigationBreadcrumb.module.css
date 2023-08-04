@@ -10,6 +10,7 @@
   border-top: 1px solid rgba(34, 36, 38, 0.15);
 }
 .fixed {
+  z-index: 100;
   position: fixed;
   right: 0;
   bottom: 0;

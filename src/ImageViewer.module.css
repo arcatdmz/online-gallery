@@ -1,0 +1,19 @@
+.viewer.active {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  background: #333a;
+  backdrop-filter: blur(3px);
+}
+
+.viewer .content {
+  z-index: 90;
+}
+
+.viewer .content img {
+  width: 100%;
+}

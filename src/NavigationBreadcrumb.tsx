@@ -1,18 +1,19 @@
-import { FC, Fragment } from "react";
+import { FC, Fragment, HTMLAttributes } from "react";
 import { Breadcrumb } from "semantic-ui-react";
 
 import styles from "./NavigationBreadcrumb.module.css";
 
 import { NavigationBreadcrumbSection } from "./NavigationBreadcrumbSection";
 
-interface NavigationBreadcrumbProps {
+interface NavigationBreadcrumbProps extends HTMLAttributes<HTMLDivElement> {
   path: string;
   attached?: "top" | "bottom" | "fixed";
 }
 
 export const NavigationBreadcrumb: FC<NavigationBreadcrumbProps> = ({
   path,
-  attached
+  attached,
+  ...props
 }) => {
   const paths = path ? path.split("/") : null;
   return (
@@ -24,6 +25,7 @@ export const NavigationBreadcrumb: FC<NavigationBreadcrumbProps> = ({
           ? styles.fixed
           : styles.top
       }`}
+      {...props}
     >
       <Breadcrumb>
         {paths ? (
