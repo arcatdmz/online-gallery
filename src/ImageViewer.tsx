@@ -3,6 +3,7 @@ import {
   MouseEvent,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState
 } from "react";
@@ -46,6 +47,27 @@ export const ImageViewer: FC<NavigationSegmentProps> = ({
       index < thumbnails.length - 1 ? thumbnails[index + 1] : null
     ];
   }, [isDirectory, thumbnails]);
+
+  useEffect(() => {
+    const listener = (ev: KeyboardEvent) => {
+      const key = ev.key.toLowerCase();
+      switch (key) {
+        case "arrowleft":
+          setPath && prevFile && setPath(`${dirPath}/${prevFile.name}`);
+          break;
+        case "arrowright":
+          setPath && nextFile && setPath(`${dirPath}/${nextFile.name}`);
+          break;
+        case "escape":
+          setPath && setPath(dirPath);
+          break;
+      }
+    };
+    window.addEventListener("keyup", listener);
+    return () => {
+      window.removeEventListener("keyup", listener);
+    };
+  }, [setPath, prevFile, nextFile, dirPath]);
 
   const handleBackdropClick = useCallback(() => {
     setPath && setPath(dirPath);
