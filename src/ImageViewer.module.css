@@ -29,6 +29,7 @@
 
 .viewer > .content img {
   width: 100%;
+  user-select: none;
 }
 
 .viewer > .content img.inverted {
