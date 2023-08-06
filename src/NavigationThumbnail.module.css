@@ -18,3 +18,13 @@
 .thumbnail.active > .caption {
   background: #722;
 }
+@media screen and (max-width: 480px) {
+  .thumbnail {
+    width: 100%;
+    margin-right: 0;
+  }
+  .thumbnail > img {
+    width: 100%;
+    height: auto;
+  }
+}
