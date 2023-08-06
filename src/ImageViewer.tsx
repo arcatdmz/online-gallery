@@ -29,7 +29,7 @@ export const ImageViewer: FC<NavigationSegmentProps> = ({
 }) => {
   const { setPath } = useContext(NavigatorContext);
   const { storagePath } = useContext(BasePathContext);
-  const [inverted, setInverted] = useState(false);
+  const [rotation, setRotation] = useState(0);
 
   const isDirectory = path === dirPath;
   const imgLink = `${storagePath}${fromPathToImgLink(path)}`;
@@ -78,12 +78,12 @@ export const ImageViewer: FC<NavigationSegmentProps> = ({
     return true;
   }, []);
 
-  const handleInvertClick = useCallback(
+  const handleRotationClick = useCallback(
     (ev: MouseEvent) => {
       ev.stopPropagation();
-      setInverted(!inverted);
+      setRotation((rotation + 90) % 360);
     },
-    [inverted]
+    [rotation]
   );
 
   const handlePrevFileClick = useCallback(
@@ -112,9 +112,9 @@ export const ImageViewer: FC<NavigationSegmentProps> = ({
           <Button
             basic
             icon="shuffle"
-            content="180度回転"
+            content={`回転: ${rotation}度`}
             inverted
-            onClick={handleInvertClick}
+            onClick={handleRotationClick}
           />
           <Button
             basic
@@ -137,7 +137,7 @@ export const ImageViewer: FC<NavigationSegmentProps> = ({
       {isDirectory ? null : (
         <div className={styles.content}>
           <a href={imgLink} target="_blank" onClick={handleClick}>
-            <img src={imgLink} className={inverted ? styles.inverted : ""} />
+            <img src={imgLink} className={styles[`rot${rotation}`]} />
           </a>
         </div>
       )}

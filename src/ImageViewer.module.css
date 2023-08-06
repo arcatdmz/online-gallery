@@ -6,6 +6,7 @@
   left: 0;
   display: flex;
   align-items: center;
+  justify-content: center;
   background: #333a;
   backdrop-filter: blur(3px);
 }
@@ -15,12 +16,18 @@
   position: fixed;
   top: 0;
   right: 0;
-  padding: 1em;
+  padding: 0.72em;
+  background: rgba(17, 18, 14, 0.9);
+  border-bottom-left-radius: 0.5rem;
   display: flex;
 }
 
 .viewer > .tools > button {
   margin-left: 0.3em;
+}
+
+.viewer > .tools > button:first-child {
+  margin-left: 0;
 }
 
 .viewer > .content {
@@ -32,6 +39,18 @@
   user-select: none;
 }
 
-.viewer > .content img.inverted {
+.viewer > .content img.rot0 {
+  rotate: 0deg;
+}
+
+.viewer > .content img.rot90 {
+  rotate: 90deg;
+}
+
+.viewer > .content img.rot180 {
   rotate: 180deg;
+}
+
+.viewer > .content img.rot270 {
+  rotate: 270deg;
 }
