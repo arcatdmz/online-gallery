@@ -50,8 +50,21 @@ export const ImageViewer: FC<NavigationSegmentProps> = ({
 
   useEffect(() => {
     const listener = (ev: KeyboardEvent) => {
+      if (isDirectory) {
+        return;
+      }
+      if (ev.type === "keydown") {
+        ev.preventDefault();
+        return;
+      }
       const key = ev.key.toLowerCase();
       switch (key) {
+        case "arrowup":
+          setRotation((rotation + 270) % 360);
+          break;
+        case "arrowdown":
+          setRotation((rotation + 90) % 360);
+          break;
         case "arrowleft":
           setPath && prevFile && setPath(`${dirPath}/${prevFile.name}`);
           break;
@@ -64,10 +77,20 @@ export const ImageViewer: FC<NavigationSegmentProps> = ({
       }
     };
     window.addEventListener("keyup", listener);
+    window.addEventListener("keydown", listener);
     return () => {
       window.removeEventListener("keyup", listener);
+      window.removeEventListener("keydown", listener);
     };
-  }, [setPath, prevFile, nextFile, dirPath]);
+  }, [
+    isDirectory,
+    setPath,
+    rotation,
+    setRotation,
+    prevFile,
+    nextFile,
+    dirPath
+  ]);
 
   const handleBackdropClick = useCallback(() => {
     setPath && setPath(dirPath);
