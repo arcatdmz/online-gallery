@@ -47,7 +47,7 @@ export const NavigationSegment: FC<NavigationSegmentProps> = ({
       <Portal open>
         <ImageViewer dirPath={dirPath} path={path} thumbnails={thumbnails} />
       </Portal>
-      <NavigationBreadcrumb path={dirPath} />
+      <NavigationBreadcrumb dirPath={dirPath} />
       {isLoading ? (
         <div className={styles.loading}>
           <Loader active />
@@ -67,7 +67,7 @@ export const NavigationSegment: FC<NavigationSegmentProps> = ({
           </p>
         </>
       )}
-      <NavigationBreadcrumb path={dirPath} attached="bottom" />
+      <NavigationBreadcrumb dirPath={dirPath} attached="bottom" />
     </Segment>
   );
 };

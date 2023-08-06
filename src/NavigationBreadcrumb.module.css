@@ -21,3 +21,6 @@
 .fixed.breadcrumb :global(> .breadcrumb > .divider) {
   color: #eee;
 }
+.fixed.breadcrumb :global(> .breadcrumb > div.section) {
+  color: #fff;
+}

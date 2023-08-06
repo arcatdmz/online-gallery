@@ -142,7 +142,8 @@ export const ImageViewer: FC<NavigationSegmentProps> = ({
         </div>
       )}
       <NavigationBreadcrumb
-        path={dirPath}
+        path={path}
+        dirPath={dirPath}
         attached="fixed"
         onClick={handleClick}
       />
